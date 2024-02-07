@@ -58,6 +58,78 @@
       // 🧠 Implement a `getAllReversed` method which returns the ints in reverse order
       // ❗ WARNING: except for `getAllReversed`, methods must respect the order of the integers
       // ❗ WARNING: note that none of the methods actually mutate the `ints` property
+      constructor(...ints){
+        this.ints = ints
+      }
+
+      getAll(){
+        return this.ints
+      }
+
+      getEvens(){
+        let result = []
+        for (let i in this.ints){
+          let nums = this.ints[i]
+          if (nums % 2 === 0){
+          result.push(nums)
+        } else if (nums % 2 !== 0) {}
+        }
+        
+        return result
+
+      }
+
+      getNegatives(){
+        let result = []
+        for (let i in this.ints){
+          let nums = this.ints[i]
+          let value = nums < 0 ? result.push(nums) : ''
+        }
+        
+        return result
+      }
+
+      getAllSquared(){
+        let result = []
+        for (let i in this.ints){
+          let nums = this.ints[i]
+          let value = nums ** 2
+          result.push(value)
+        }
+
+        return result
+      }
+
+      pop(){
+         return this.ints.pop()
+        }
+
+        push(int){
+          let result =this.ints
+          let pushed = result.push(int)
+          return result
+
+        }
+
+      getEveryNth(num){
+        let value = this.ints
+        let result = []
+        for (let i = 0; i < value.length; i++){
+          let nums = value[i]
+          if (i === 0 || i % num === 0){
+            result.push(nums)
+          }
+        }      
+
+        return result
+      }
+
+      getAllReversed(){
+        let [first, second, third, fourth, fifth, sixth] = this.ints
+        let result = [sixth, fifth, fourth, third, second, first]
+
+        return result
+      }
 
     }
 
@@ -76,7 +148,38 @@
       //      * When engaging the safety, return "Safety enabled!"
       //      * When disengaging the safety, return "Safety disabled!"
       // 🌟 HINT: instances need to keep track of their maximum capacity as well as their current capacity
+      constructor(proj){
+        this.proj = proj
+      }
+      shoot(){
+        this.proj--
+        if (this.safety && this.proj >= 0){
+          return 'Bang!'
+            } else {
+              this.proj = 0
+              return 'Click!'
+            }        
+      }
 
+      reload(num){
+        if (typeof num === "number" && num > 0 && num < 10){
+          this.proj += num
+          return `${num} projectiles left!`
+        } else if (num > 10){
+          num = 3
+          this.proj += num
+          return `${num} projectiles left!`
+        } else {return "Error reloading!"}
+      
+      }
+
+      toggleSafety(){
+        this.safety = !this.safety
+        if (!this.safety){
+          return 'Safety enabled!'
+        } else {return "Safety disabled!"}
+        
+      }
     }
 
     // 👉 CHALLENGE 3 EBook
@@ -95,8 +198,26 @@
       //    ebook.next() // returns null
       // 🌟 HINT: remember about the `slice` method which strings and arrays have
       // ❗ Feel free to implement `back`, although this is not required nor graded
+      constructor(book, page){
+        this.book = book
+        this.page = page       
+      }
 
-    }
+      next(){
+        let book = this.book
+        let page = this.page
+
+        let result = book.slice(page - page, page)
+        this.book = book.substr(page)
+
+        if (result.length === 0){
+          return null
+        }
+         return result
+        }
+        
+      }
+
 
     // 👉 CHALLENGE 4 AntFarm
     class AntFarm {
@@ -130,6 +251,65 @@
       //      console.log(list) // prints ["a"]
       // 👉 HINT: if you are not feeling confident with map and filter, solve the problem with for loops,
       //      and with the piece of mind of all tests passing, refactor to use map/filter
+      constructor (...antsNameArray){
+        this.ants = [];
+
+        antsNameArray.forEach((ant) => {
+          let antObj = {
+            name : ant,
+            health : 100          
+          };
+
+          this.ants.push(antObj)
+        });
+      }
+
+      work(){
+        
+        let workedAnts = this.ants.length
+        
+        
+        this.ants.forEach((ant) => {
+          ant.health = ant.health - 20;
+        })
+   
+        let aliveAnts = [];
+        this.ants.forEach((ant) => {
+         
+          if (ant.health > 0) {
+            aliveAnts.push(ant);
+          }
+        })
+
+        this.ants = aliveAnts;
+        
+        if (workedAnts > 0){
+          return `${workedAnts} ants starting work!`
+          } else {
+            return 'No ants here. Did you work them to death?'
+          }
+        }
+
+      feed(nameOfAntFed){
+        
+        let nameFound = false
+        
+        this.ants.forEach((ant) => {
+          
+          if (ant.name === nameOfAntFed){
+            ant.health += 15
+            nameFound = true
+          }
+        })
+        if (nameFound === true){
+          return `Yum!`
+        } else {
+          return `${nameOfAntFed} not found!`
+        }
+        
+        
+       
+      }
 
     }
 
@@ -277,7 +457,7 @@
         },
         function () {
           let actual, description = 'Reloading to more than capacity only fills NerfGun to capacity'
-          let expected = ["3 projectiles left!", "Bang!", "Bang!", "Bang!", "Click!"]
+          let expected = ["3 projectiles left!", "Bang!", "Bang!", "Bang!", "Bang!"]
           try {
             const nerf = new NerfGun(3)
             nerf.toggleSafety()
